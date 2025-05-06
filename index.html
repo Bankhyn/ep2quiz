@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Quiz with Multiple Images</title>
+  <style>
+    body { font-family: sans-serif; background: #fff; text-align: center; padding: 20px; }
+    #quiz-container { position: relative; display: inline-block; }
+    #quiz-image { width: 600px; height: auto; border: 2px solid #ccc; }
+    #question-box { margin-top: 20px; padding: 15px; border: 2px dashed #3480d4; background: #f3faff; border-radius: 10px; }
+    #result { margin-top: 15px; font-weight: bold; }
+    input[type="text"] { width: 200px; padding: 5px; font-size: 16px; }
+    button { padding: 8px 16px; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+<div id="quiz-container">
+  <img id="quiz-image" src="ep2quiz1.png">
+</div>
+
+<div id="question-box">
+  <div id="question">1. จากภาพเป็นการฟอร์มขึ้นแบบอะไร (1.สมบูรณ์ / 2.หักคอ) ตอบทั้ง2คำถามโดยเว้นวรรค</div>
+  <input type="text" id="answerInput" placeholder="ตอบเป็นตัวเลข...">
+  <button id="submitBtn">ส่งคำตอบ</button>
+  <div id="result"></div>
+</div>
+
+<script>
+
+
+const quizData = [
+  {
+    img: "ep2quiz1.png",
+    question: "1. จากภาพเป็นการฟอร์มขึ้นแบบอะไร (1.สมบูรณ์ / 2.หักคอ) ตอบทั้ง2คำถามโดยเว้นวรรค",
+    answer: "1 2"
+  },
+  {
+    img: "ep2quiz2.png",
+    question: "2. จากภาพเป็นการฟอร์มขึ้นแบบอะไร (1.สมบูรณ์ / 2.หักคอ)  ตอบทั้ง2คำถามโดยเว้นวรรค",
+    answer: "2 1"
+  },
+  {
+    img: "ep2quiz3.png",
+    question: "3. จากภาพเป็นการฟอร์มลงแบบอะไร (1.สมบูรณ์ / 2.หักคอ)  ตอบทั้ง2คำถามโดยเว้นวรรค",
+    answer: "2 2"
+  },
+  {
+    img: "ep2quiz4.png",
+    question: "4. จากภาพชุดไหนเป็นภูเขาลูกหลัง (1.สีส้ม / 2.สีน้ำเงิน)  ",
+    answer: "2"
+  },
+  {
+    img: "ep2quiz5.png",
+    question: "5. จากภาพชุดไหนเป็นภูเขาลูกหลัง (1.สีส้ม / 2.สีม่วง / 3.สีเขียว)  ",
+    answer: "3"
+  }
+];
+
+let currentIndex = 0;
+let score = 0; // <-- เพิ่มตรงนี้
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const userAnswer = document.getElementById('answerInput').value.trim();
+  const correctAnswer = quizData[currentIndex].answer;
+
+  const resultDiv = document.getElementById('result');
+  if (userAnswer === correctAnswer) {
+    score++; // ✅ เพิ่มคะแนนเมื่อถูก
+    resultDiv.style.color = 'green';
+    resultDiv.innerText = '✅ ตอบถูก!';
+  } else {
+    resultDiv.style.color = 'red';
+    resultDiv.innerText = '❌ ตอบผิดผิดผิดผิด!';
+  }
+
+  setTimeout(() => {
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    loadQuestion();
+  } else {
+    resultDiv.style.color = 'black';
+    resultDiv.innerHTML = `🎉 ทำแบบทดสอบครบแล้ว!<br>คุณได้คะแนน: <strong>${score} / ${quizData.length}</strong>`;
+    
+    // ซ่อน input กับปุ่ม แต่ให้กล่องยังอยู่
+    document.getElementById('answerInput').style.display = 'none';
+    document.getElementById('submitBtn').style.display = 'none';
+  }
+}, 1000);
+});
+
+
+function loadQuestion() {
+  document.getElementById('quiz-image').src = quizData[currentIndex].img;
+  document.getElementById('question').innerText = quizData[currentIndex].question;
+  document.getElementById('answerInput').value = '';
+  document.getElementById('result').innerText = '';
+}
+
+</script>
+</body>
+</html>
